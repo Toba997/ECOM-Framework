@@ -121,3 +121,5 @@ now drive it automatically through SSE.
 <!-- change: 2026-08-26 18.06.11 -->
 
 <!-- re-verify webhook: 18.09.58 -->
+
+<!-- auto-heal verify: 18.16.29 -->
