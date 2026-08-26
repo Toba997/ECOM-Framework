@@ -131,3 +131,4 @@ now drive it automatically through SSE.
 <!-- final verify: 18.29.52 -->
 
 <!-- trigger: 18.49.18 -->
+trigger build
