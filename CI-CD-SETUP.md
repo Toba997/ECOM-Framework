@@ -117,3 +117,5 @@ The office's own **▶ Start** button is just a simulation — real Jenkins buil
 now drive it automatically through SSE.
 
 <!-- webhook smoke test: 2026-08-26 12.04.54 -->
+
+<!-- change: 2026-08-26 18.06.11 -->
