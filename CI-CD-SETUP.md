@@ -12,6 +12,17 @@ git push ──► GitHub webhook ──► Jenkins ──► mvn clean test (Te
 Your machine already has **Java 25, Maven 3.9, Git, Node** installed, and the
 ecom-app builds + 10 TestNG tests pass locally (`mvn test`).
 
+The project also includes a runnable Spring Boot storefront with an H2 file
+database. Start it with:
+
+```powershell
+mvn spring-boot:run
+```
+
+Then open `http://localhost:8081/`. Products are seeded automatically and
+inventory is preserved across restarts. The JSON API is under
+`/api/store/products`, `/api/store/cart`, and `/api/store/checkout`.
+
 ---
 
 ## Step 1 — Push the code to GitHub
@@ -81,6 +92,10 @@ Manage Jenkins → Plugins → Available:
 1. Keep the webhook server running (it's already up):
    ```
    node server.js   (or double-click start.bat)
+   ```
+   Start the store separately when you want the e-commerce site:
+   ```powershell
+   mvn spring-boot:run
    ```
 2. Make sure these match:
    - `Jenkinsfile` → `WEBHOOK_URL` and `WEBHOOK_TOKEN`
