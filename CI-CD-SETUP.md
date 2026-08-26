@@ -132,3 +132,5 @@ now drive it automatically through SSE.
 
 <!-- trigger: 18.49.18 -->
 trigger build
+
+<!-- seq flow test: 18.59.09 -->
