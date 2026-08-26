@@ -39,6 +39,31 @@ def notifyWebhook = { String status ->
     }
 }
 
+// Send a per-stage progress event so the office animates in real time.
+def notifyStage = { String stage, String stageStatus ->
+    def payload = [
+        project_name: env.JOB_NAME,
+        build_number: env.BUILD_NUMBER,
+        stage: stage,
+        stage_status: stageStatus,
+        branch: (env.GIT_BRANCH ?: 'main').replaceFirst('^origin/', ''),
+        build_url: env.BUILD_URL
+    ]
+    try {
+        httpRequest(
+            url: env.WEBHOOK_URL,
+            httpMode: 'POST',
+            contentType: 'APPLICATION_JSON',
+            requestBody: JsonOutput.toJson(payload),
+            customHeaders: [[name: 'X-Webhook-Token', value: env.WEBHOOK_TOKEN]],
+            validResponseCodes: '200:299',
+            quiet: true
+        )
+    } catch (err) {
+        echo "Stage notification failed (non-fatal): ${err.getMessage()}"
+    }
+}
+
 pipeline {
     agent any
 
@@ -63,25 +88,42 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                script {
+                    notifyStage('checkout', 'RUNNING')
+                    checkout scm
+                }
+            }
+            post {
+                success { script { notifyStage('checkout', 'SUCCESS') } }
+                failure { script { notifyStage('checkout', 'FAILURE') } }
             }
         }
 
         stage('Compile') {
             steps {
                 script {
+                    notifyStage('compile', 'RUNNING')
                     if (isUnix()) { sh 'mvn -B clean compile' }
                     else          { bat 'mvn -B clean compile' }
                 }
+            }
+            post {
+                success { script { notifyStage('compile', 'SUCCESS') } }
+                failure { script { notifyStage('compile', 'FAILURE') } }
             }
         }
 
         stage('Test (TestNG)') {
             steps {
                 script {
+                    notifyStage('test', 'RUNNING')
                     if (isUnix()) { sh 'mvn -B test' }
                     else          { bat 'mvn -B test' }
                 }
+            }
+            post {
+                success { script { notifyStage('test', 'SUCCESS') } }
+                failure { script { notifyStage('test', 'FAILURE') } }
             }
         }
     }
