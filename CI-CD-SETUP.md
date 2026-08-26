@@ -115,3 +115,5 @@ Manage Jenkins → Plugins → Available:
 
 The office's own **▶ Start** button is just a simulation — real Jenkins builds
 now drive it automatically through SSE.
+
+<!-- webhook smoke test: 2026-08-26 12.04.54 -->
