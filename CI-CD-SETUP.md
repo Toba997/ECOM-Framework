@@ -129,3 +129,5 @@ now drive it automatically through SSE.
 <!-- live stage test: 18.28.44 -->
 
 <!-- final verify: 18.29.52 -->
+
+<!-- trigger: 18.49.18 -->
